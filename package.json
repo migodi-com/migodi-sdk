@@ -1,0 +1,101 @@
+{
+  "name": "@migodi/sdk",
+  "version": "1.0.1",
+  "description": "Official Migodi API SDK",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./hashrate": {
+      "import": "./dist/resources/hashrate.js",
+      "types": "./dist/resources/hashrate.d.ts"
+    },
+    "./pools": {
+      "import": "./dist/resources/pools.js",
+      "types": "./dist/resources/pools.d.ts"
+    },
+    "./solo-mining": {
+      "import": "./dist/resources/solo-mining.js",
+      "types": "./dist/resources/solo-mining.d.ts"
+    },
+    "./channel-mining": {
+      "import": "./dist/resources/channel-mining.js",
+      "types": "./dist/resources/channel-mining.d.ts"
+    },
+    "./payment": {
+      "import": "./dist/resources/payment.js",
+      "types": "./dist/resources/payment.d.ts"
+    },
+    "./errors": {
+      "import": "./dist/errors.js",
+      "types": "./dist/errors.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prepublishOnly": "npm run build && npm test",
+    "prepare": "npm run build",
+    "setup:hooks": "git config core.hooksPath .githooks",
+    "pretest": "npm run build"
+  },
+  "keywords": [
+    "migodi",
+    "mining",
+    "hashrate",
+    "api",
+    "sdk",
+    "bitcoin",
+    "solo-mining",
+    "channel-mining",
+    "pool-management",
+    "cryptocurrency",
+    "crypto",
+    "blockchain",
+    "sha256",
+    "mining-pool",
+    "btc",
+    "node",
+    "typescript",
+    "rest-api"
+  ],
+  "author": "Migodi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/migodi-com/migodi-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/migodi-com/migodi-sdk/issues"
+  },
+  "homepage": "https://github.com/migodi-com/migodi-sdk#readme",
+  "sideEffects": false,
+  "overrides": {
+    "glob": "^10.4.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.14",
+    "dotenv": "^17.2.0",
+    "jest": "^30.0.4",
+    "npm-check-updates": "^18.0.1",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
