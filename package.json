@@ -45,14 +45,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "prepublishOnly": "npm run build && npm test",
-    "prepare": "npm run build",
-    "setup:hooks": "git config core.hooksPath .githooks",
-    "pretest": "npm run build"
+    "build": "tsc"
   },
   "keywords": [
     "migodi",
