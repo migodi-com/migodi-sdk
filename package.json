@@ -1,6 +1,6 @@
 {
   "name": "@migodi/sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Official Migodi API SDK",
   "type": "module",
   "main": "./dist/index.js",
@@ -39,20 +39,13 @@
     "dist",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md"    
   ],
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "prepublishOnly": "npm run build && npm test",
-    "prepare": "npm run build",
-    "setup:hooks": "git config core.hooksPath .githooks",
-    "pretest": "npm run build"
+    "build": "tsc"
   },
   "keywords": [
     "migodi",

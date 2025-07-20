@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-01-19
+
+### 🚀 New Features
+
+#### Added
+- **Pause/Resume for Hashrate Orders**: New methods to pause and resume active hashrate orders
+  - `pauseOrder(orderId)` - Pause an active order and preserve remaining duration
+  - `resumeOrder(orderId)` - Resume a paused order from where it left off
+  - New order status: `paused`
+  - New fields: `paused_at`, `pause_duration`, `remaining_duration`
+- **Enhanced Query Parameters**: Improved filtering and sorting for order listings
+  - `order_by` parameter for sorting by various fields (created_at, begin_at, end_at, status, coin, hashrate)
+  - `order` parameter for sort direction (asc, desc)
+  - Enhanced `status` filter with new `paused` option
+- **Time-based Statistics Filtering**: Added optional time range filtering for order statistics
+  - `since` parameter for start timestamp (ISO 8601 format)
+  - `until` parameter for end timestamp (ISO 8601 format)
+
+#### Changed
+- **pool_id → user_pool_id Migration**: Introduced new parameter name for better clarity
+  - `user_pool_id` is now the preferred parameter (replaces `pool_id`)
+  - `pool_id` is deprecated but still supported for backward compatibility
+  - SDK automatically handles the migration transparently
+
+### 🔧 Technical Improvements
+
+#### Added
+- Enhanced TypeScript interfaces with stricter typing
+- New interfaces: `ListHashrateOrdersParams`, `GetOrderStatsParams`
+- Comprehensive test coverage for all new features
+- Mock client enhancement with `getLastRequest()` method for better testing
+
+#### Updated
+- OpenAPI specification to version 1.1.0
+- Documentation with migration guide and new examples
+- README with pause/resume examples and pool_id migration guide
+
+### 📚 Documentation
+- Added migration guide for pool_id → user_pool_id transition
+- Updated all examples to use the new user_pool_id parameter
+- Added comprehensive examples for pause/resume functionality
+- Enhanced API reference with new parameter descriptions
+
+### ⚠️ Deprecations
+- `pool_id` parameter in `createOrder()` is deprecated in favor of `user_pool_id`
+  - Will trigger warnings in v1.2.0
+  - Will be removed in v2.0.0
+
 ## [1.0.1] - 2025-01-16
 
 ### 🔄 API Updates & Improvements

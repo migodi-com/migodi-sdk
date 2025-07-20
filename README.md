@@ -41,7 +41,7 @@ const order = await migodi.hashrate.createOrder({
   term: 24,
   time_unit: 'hour',
   hashrate: 1000,
-  pool_id: 'pool-uuid',
+  user_pool_id: 'pool-uuid',  // Updated parameter name
   wallet_id: 'wallet-id'
 });
 console.log(`Order created: ${order.data.id}`);
@@ -83,9 +83,41 @@ const order = await migodi.hashrate.createOrder({
   coin: 'BTC',         // string
   term: 24,            // number  
   time_unit: 'hour',   // 'minute' | 'hour' | 'day'
-  hashrate: 1000       // number
+  hashrate: 1000,      // number
+  user_pool_id: 'pool-uuid' // string (replaces pool_id)
 });
 ```
+
+## Migration Guide: pool_id → user_pool_id
+
+Starting from version 1.1.0, the `pool_id` parameter in hashrate order creation is deprecated in favor of `user_pool_id`. The SDK maintains backward compatibility, so existing code will continue to work.
+
+```javascript
+// Old way (still works but deprecated)
+const order = await migodi.hashrate.createOrder({
+  coin: 'BTC',
+  term: 24,
+  time_unit: 'hour',
+  hashrate: 1000,
+  pool_id: 'pool-uuid',      // @deprecated
+  wallet_id: 'wallet-uuid'
+});
+
+// New way (recommended)
+const order = await migodi.hashrate.createOrder({
+  coin: 'BTC',
+  term: 24,
+  time_unit: 'hour',
+  hashrate: 1000,
+  user_pool_id: 'pool-uuid',  // New parameter name
+  wallet_id: 'wallet-uuid'
+});
+```
+
+**Migration Timeline:**
+- v1.1.0: Both `pool_id` and `user_pool_id` are supported
+- v1.2.0: Using `pool_id` will trigger deprecation warnings
+- v2.0.0: `pool_id` will be removed (major version)
 
 ## Tree-shaking and Bundle Optimization
 
@@ -129,11 +161,11 @@ const pricing = await migodi.hashrate.getPricing();
 ```javascript
 const order = await migodi.hashrate.createOrder({
   coin: 'BTC',
-  term: 24,              // Duration value (depends on time_unit)
-  time_unit: 'hour',     // Time unit: 'minute', 'hour', or 'day'
-  hashrate: 1000,        // Hashrate in TH/s (min: 120, max: 10000)
-  pool_id: 'pool-uuid',  // Required: specific pool
-  wallet_id: 'wallet-id' // Required: payment wallet
+  term: 24,                  // Duration value (depends on time_unit)
+  time_unit: 'hour',         // Time unit: 'minute', 'hour', or 'day'
+  hashrate: 1000,            // Hashrate in TH/s (min: 120, max: 10000)
+  user_pool_id: 'pool-uuid', // Required: specific pool
+  wallet_id: 'wallet-id'     // Required: payment wallet
 });
 ```
 
@@ -144,20 +176,38 @@ const order = await migodi.hashrate.getOrder('order-id');
 
 #### Get Order Statistics
 ```javascript
-const stats = await migodi.hashrate.getOrderStats(
-  'order-id',
-  '2024-01-01T00:00:00Z', // Optional: since timestamp
-  '2024-01-02T00:00:00Z'  // Optional: until timestamp
-);
+// Get all stats for an order
+const stats = await migodi.hashrate.getOrderStats('order-id');
+
+// Get stats with time range filtering
+const filteredStats = await migodi.hashrate.getOrderStats('order-id', {
+  since: '2024-01-01T00:00:00Z',  // Optional: since timestamp
+  until: '2024-01-02T00:00:00Z'   // Optional: until timestamp
+});
 ```
 
 #### List Orders
 ```javascript
+// List orders with enhanced filtering and sorting
 const orders = await migodi.hashrate.listOrders({
-  status: 'active',
+  status: 'active',      // Filter by status: 'inactive' | 'active' | 'paused' | 'completed' | 'cancelled'
   page: 1,
-  limit: 20
+  limit: 20,
+  order_by: 'created_at', // Sort by field
+  order: 'desc'          // Sort direction
 });
+```
+
+#### Pause/Resume Orders
+```javascript
+// Pause an active hashrate order
+const pausedOrder = await migodi.hashrate.pauseOrder('order-id');
+console.log('Order paused at:', pausedOrder.data.paused_at);
+console.log('Remaining duration:', pausedOrder.data.remaining_duration);
+
+// Resume a paused hashrate order
+const resumedOrder = await migodi.hashrate.resumeOrder('order-id');
+console.log('Order resumed, status:', resumedOrder.data.status); // 'active'
 ```
 
 ### Pools
@@ -383,7 +433,7 @@ async function main() {
       term: 24,
       time_unit: 'hour',
       hashrate: 1000,
-      pool_id: pool.data.id,
+      user_pool_id: pool.data.id,
       wallet_id: 'wallet-id'
     });
     console.log(`Hashrate order: ${hashrateOrder.data.id}`);
